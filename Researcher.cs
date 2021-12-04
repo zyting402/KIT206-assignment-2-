@@ -8,7 +8,7 @@ namespace KIT206_assignment_2_
 {
     enum Gender { M, F, X };
 
-    class Researcher
+    public abstract class Researcher
     {
         public string familyName;
         public string givenName;
@@ -23,7 +23,7 @@ namespace KIT206_assignment_2_
         public float tenure;
         public float publications;
         public int id;
-        public Gender gender;
+        Gender gender;
 
         /*
          * Task 2.2.3
