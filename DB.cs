@@ -5,7 +5,7 @@ using System.Text;
 using System.Data;
 using MySql.Data.MySqlClient;
 
-namespace KIT206_assignment_2_
+namespace RAP
 {
     class DB
     {
@@ -26,11 +26,42 @@ namespace KIT206_assignment_2_
             string connectionString = String.Format("Database={0};Data Source={1};User Id={2};Password={3}", db, server, user, pass);
             conn = new MySqlConnection(connectionString);
         }
+
+                /*
+         * Using the ExecuteScalar method
+         * returns number of records
+         */
+        public int GetNumberOfRecords()
+        {
+            int count = -1;
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // 1. Instantiate a new command
+                MySqlCommand cmd = new MySqlCommand("select COUNT(*) from researcher", conn);
+
+                // 2. Call ExecuteScalar to send command
+                // This convoluted approach is safe since cannot predict actual return type
+                count = int.Parse(cmd.ExecuteScalar().ToString());
+            }
+            finally
+            {
+                // Close the connection
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            return count;
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("testing has begun");
 
-            Program demo = new Program();
+            DB demo = new DB();
 
             int count = demo.GetNumberOfRecords();
             Console.WriteLine("Number of researcher records: {0}", count);
@@ -115,34 +146,6 @@ namespace KIT206_assignment_2_
         }
 
 
-        /*
-         * Using the ExecuteScalar method
-         * returns number of records
-         */
-        public int GetNumberOfRecords()
-        {
-            int count = -1;
-            try
-            {
-                // Open the connection
-                conn.Open();
 
-                // 1. Instantiate a new command
-                MySqlCommand cmd = new MySqlCommand("select COUNT(*) from researcher", conn);
-
-                // 2. Call ExecuteScalar to send command
-                // This convoluted approach is safe since cannot predict actual return type
-                count = int.Parse(cmd.ExecuteScalar().ToString());
-            }
-            finally
-            {
-                // Close the connection
-                if (conn != null)
-                {
-                    conn.Close();
-                }
-            }
-            return count;
-        }
     }
 }
